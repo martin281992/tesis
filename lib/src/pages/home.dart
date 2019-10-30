@@ -83,18 +83,18 @@ class HomePageTagit extends StatelessWidget {
             Text(
               'Tarifa actual',
               style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10.0),
             Text(
               'Bienvenido, el color te indicara el ',
-              style: TextStyle(color: Colors.white, fontSize: 15.0),
+              style: TextStyle(color: Colors.black, fontSize: 15.0),
             ),
             Text(
               'horario para el cobro de tu tag ',
-              style: TextStyle(color: Colors.white, fontSize: 15.0),
+              style: TextStyle(color: Colors.black, fontSize: 15.0),
             ),
           ],
         ),
@@ -201,8 +201,10 @@ class HomePageTagit extends StatelessWidget {
 
           ListTile(
             leading: Icon(Icons.pages, color: Colors.deepPurple),
-            title: Text('Mis Rutas'),
-            onTap: (){},
+            title: Text('Mis Autos'),
+            onTap: (){
+              Navigator.pushNamed(context, 'autos');
+            },
           ),
 
           ListTile(

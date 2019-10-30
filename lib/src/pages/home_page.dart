@@ -1,3 +1,4 @@
+import 'package:apptagit/src/pages/agregar_coordenada.dart';
 import 'package:apptagit/src/pages/autos.dart';
 import 'package:apptagit/src/pages/home.dart';
 import 'package:apptagit/src/pages/socios.dart';
@@ -39,7 +40,6 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buttonNavigationBarAlt() {
     return BottomNavigationBar(
-
       currentIndex: currentIndex,
       onTap: (index) {
         setState(() {
@@ -62,6 +62,4 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
-
-
 }
