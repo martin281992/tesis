@@ -6,20 +6,26 @@ class HomePageTagit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       appBar: AppBar(
+        title: Text('No te dejes cobrar de mas'),
+        backgroundColor: Colors.deepPurple,
+      ),
+      drawer: _newMenu(context),
       body: Stack(
         children: <Widget>[
-          _fondoApp(),
+          //_fondoApp(),
+
           SingleChildScrollView(
             child: Column(
               children: <Widget>[
                 _titulos(),
-                _botonesHome(context),
+                //_botonesHome(context),
               ],
             ),
           )
         ],
       ),
-     // bottomNavigationBar: _buttonNavigatorBar(context),
+      // bottomNavigationBar: _buttonNavigatorBar(context),
     );
   }
 
@@ -168,6 +174,45 @@ class HomePageTagit extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Drawer _newMenu(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: Container(),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('asset/fondo2.jpg'),
+                fit: BoxFit.cover
+              )
+            ),
+          ),
+
+          ListTile(
+            leading: Icon(Icons.pages, color: Colors.deepPurple),
+            title: Text('Mi informacion'),
+            onTap: (){},
+          ),
+
+          ListTile(
+            leading: Icon(Icons.pages, color: Colors.deepPurple),
+            title: Text('Mis Rutas'),
+            onTap: (){},
+          ),
+
+          ListTile(
+            leading: Icon(Icons.pages, color: Colors.deepPurple),
+            title: Text('Mis socios'),
+            onTap: (){
+               Navigator.pushNamed(context, 'socios');
+            },
+          ),
+        ],
       ),
     );
   }
