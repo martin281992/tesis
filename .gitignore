@@ -8,6 +8,7 @@
 .buildlog/
 .history
 .svn/
+/node_modules
 
 # IntelliJ related
 *.iml
@@ -26,6 +27,7 @@
 .pub-cache/
 .pub/
 /build/
+
 
 # Android related
 **/android/**/gradle-wrapper.jar
