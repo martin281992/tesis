@@ -1,15 +1,33 @@
+import 'package:apptagit/src/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginSocios extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Color(0xFF21BFBD),
         body: Stack(
-      children: <Widget>[
-        _crearFondo(context),
-        _loginSocio(context),
-      ],
-    ));
+          children: <Widget>[
+            _crearFondo(context),
+            _loginSocio(context),
+          ],
+        ));
+  }
+
+  Widget _buttonBack(BuildContext context) {
+    return Container(
+      child: Padding(
+        padding: EdgeInsets.only(top: 20.0, left: 90.0),
+        child: Row(
+          children: <Widget>[
+            FlatButton(
+              child: Text('Regresa Home', style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic,),),
+              onPressed: () => Navigator.pushNamed(context, 'login'),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _loginSocio(BuildContext context) {
@@ -19,12 +37,12 @@ class LoginSocios extends StatelessWidget {
       children: <Widget>[
         SafeArea(
           child: Container(
-            height: 250.0,
+            height: 230.0,
           ),
         ),
         Container(
             width: size.width * 0.75,
-            padding: EdgeInsets.symmetric(vertical: 50.0),
+            padding: EdgeInsets.symmetric(vertical:20.0),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: <Color>[
@@ -46,6 +64,7 @@ class LoginSocios extends StatelessWidget {
                 _tokenSocio(),
                 SizedBox(height: 15.0, width: double.infinity),
                 _botonIngreso(),
+                _buttonBack(context),
               ],
             )),
       ],
