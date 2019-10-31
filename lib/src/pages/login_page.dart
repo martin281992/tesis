@@ -62,12 +62,9 @@ class LoginPage extends StatelessWidget {
             onPressed: () =>
                 Navigator.pushReplacementNamed(context, 'register'),
           ),
-            FlatButton(
+          FlatButton(
             child: Text('¿Eres Socio?'),
-            onPressed: () =>
-                Navigator.pushNamed(context, 'login_socios'),
-
-
+            onPressed: () => Navigator.pushNamed(context, 'login_socios'),
           )
         ],
       ),
@@ -116,7 +113,6 @@ class LoginPage extends StatelessWidget {
   }
 
   Widget _crearBoton(LoginBloc bloc) {
-
     return StreamBuilder(
       stream: bloc.formValidStream,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -140,10 +136,12 @@ class LoginPage extends StatelessWidget {
 
     if (info['ok'] && bloc.email == 'martin.berkhoff2@gmail.com') {
       Navigator.pushReplacementNamed(context, 'admin');
-    } else {
-      mostrarAlerta(context, info['message']);
+    } else if (info['ok']) {
       Navigator.pushReplacementNamed(context, 'homealternative');
-
+      print(info);
+    } else {
+      await mostrarAlerta(context, info['message']);
+      Navigator.pushReplacementNamed(context, 'login');
     }
   }
 
