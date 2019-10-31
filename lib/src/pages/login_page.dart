@@ -51,9 +51,8 @@ class LoginPage extends StatelessWidget {
                 Text('No te dejes cobrar demás',
                     style: TextStyle(color: Colors.grey, fontSize: 10.0)),
                 _crearEmail(bloc),
-                SizedBox(height: 30.0),
                 _crearPassword(bloc),
-                SizedBox(height: 30.0),
+                SizedBox(height: 10.0),
                 _crearBoton(bloc),
               ],
             ),
@@ -62,6 +61,13 @@ class LoginPage extends StatelessWidget {
             child: Text('Registrate'),
             onPressed: () =>
                 Navigator.pushReplacementNamed(context, 'register'),
+          ),
+            FlatButton(
+            child: Text('¿Eres Socio?'),
+            onPressed: () =>
+                Navigator.pushNamed(context, 'login_socios'),
+
+
           )
         ],
       ),
