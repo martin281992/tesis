@@ -8,6 +8,19 @@ class Estadisticas extends StatefulWidget {
 }
 
 class _EstadisticasState extends State<Estadisticas> {
+  PageController _controller;
+  int currentPage = 8;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = PageController(
+      initialPage: currentPage,
+      viewportFraction: 0.3,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,16 +35,70 @@ class _EstadisticasState extends State<Estadisticas> {
           _mes(),
           _costoTotalTag(),
           _grafico(),
-           Container(
+          Container(
             color: Colors.deepPurpleAccent.withOpacity(0.15),
-            height: 8.0,),
+            height: 8.0,
+          ),
           _listaTag(),
         ],
       ),
     );
   }
 
-  Widget _mes() => Container();
+  Widget _pageItem(String nombre, int posicion) {
+    var _alignmen;
+
+    final selected = TextStyle(
+        fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurpleAccent);
+
+    final unselected = TextStyle(
+        fontSize: 18.0,
+        fontWeight: FontWeight.normal,
+        color: Colors.blueGrey.withOpacity(0.4));
+
+    if (posicion == currentPage) {
+      _alignmen = Alignment.center;
+    } else if (posicion > currentPage) {
+      _alignmen = Alignment.centerRight;
+    } else {
+      _alignmen = Alignment.centerLeft;
+    }
+    return Align(
+      alignment: _alignmen,
+      child: Text(
+        nombre,
+        style: posicion == currentPage ? selected : unselected,
+      ),
+    );
+  }
+
+  Widget _mes() {
+    return SizedBox.fromSize(
+        size: Size.fromHeight(70.0),
+        child: PageView(
+          onPageChanged: (newPage){
+            setState(() {
+             currentPage = newPage;
+            });
+          },
+          controller: _controller,
+          children: <Widget>[
+            _pageItem('Enero', 0),
+            _pageItem('Febrero', 1),
+            _pageItem('Marzo', 2),
+            _pageItem('Abril', 3),
+            _pageItem('Mayo', 4),
+            _pageItem('Junio', 5),
+            _pageItem('Julio', 6),
+            _pageItem('Agosto', 7),
+            _pageItem('Septiembre', 8),
+            _pageItem('Octubre', 9),
+            _pageItem('Noviembre', 10),
+            _pageItem('Diciembre', 11),
+          ],
+        ));
+  }
+
   Widget _grafico() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -81,12 +148,11 @@ class _EstadisticasState extends State<Estadisticas> {
         itemCount: 15,
         itemBuilder: (BuildContext context, int index) =>
             _item(FontAwesomeIcons.car, "costo", 14, 145.12),
-        separatorBuilder: (BuildContext context, int index){
+        separatorBuilder: (BuildContext context, int index) {
           return Container(
             color: Colors.deepPurpleAccent.withOpacity(0.15),
             height: 3.0,
-
-            );
+          );
         },
       ),
     );
