@@ -1,4 +1,5 @@
 import 'package:apptagit/src/pages/agregar_coordenada.dart';
+import 'package:apptagit/src/pages/estadisticas.dart';
 import 'package:apptagit/src/pages/login_page_socio.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Material App',
-        initialRoute: 'login',
+        initialRoute: 'estadisticas',
         routes: {
           'login': (BuildContext context) => LoginPage(),
           'register': (BuildContext context) => RegisterPage(),
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
           'addsocio': (BuildContext context) => AgregarSocios(),
           'admin': (BuildContext context) => AgregarCoordenada(),
           'login_socios': (BuildContext context) => LoginSocios(),
+          'estadisticas': (BuildContext context) => Estadisticas(),
         },
         theme: ThemeData(
           primaryColor: Colors.deepPurple,

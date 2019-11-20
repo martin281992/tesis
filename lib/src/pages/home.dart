@@ -6,7 +6,7 @@ class HomePageTagit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: AppBar(
+      appBar: AppBar(
         title: Text('No te dejes cobrar de mas'),
         backgroundColor: Colors.deepPurple,
       ),
@@ -186,32 +186,33 @@ class HomePageTagit extends StatelessWidget {
           DrawerHeader(
             child: Container(),
             decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('asset/fondo2.jpg'),
-                fit: BoxFit.cover
-              )
-            ),
+                image: DecorationImage(
+                    image: AssetImage('asset/fondo2.jpg'), fit: BoxFit.cover)),
           ),
-
           ListTile(
             leading: Icon(Icons.pages, color: Colors.deepPurple),
             title: Text('Mi informacion'),
-            onTap: (){},
+            onTap: () {},
           ),
-
           ListTile(
             leading: Icon(Icons.pages, color: Colors.deepPurple),
             title: Text('Mis Autos'),
-            onTap: (){
+            onTap: () {
               Navigator.pushNamed(context, 'autos');
             },
           ),
-
           ListTile(
             leading: Icon(Icons.pages, color: Colors.deepPurple),
             title: Text('Mis socios'),
-            onTap: (){
-               Navigator.pushNamed(context, 'socios');
+            onTap: () {
+              Navigator.pushNamed(context, 'socios');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.pages, color: Colors.deepPurple),
+            title: Text('Mis estadisticas'),
+            onTap: () {
+              Navigator.pushNamed(context, 'estadisticas');
             },
           ),
         ],
