@@ -3,19 +3,15 @@ import 'dart:math';
 import 'package:charts_flutter/flutter.dart';
 
 class Grafico extends StatefulWidget {
+  final List<double> data;
+
+  const Grafico({Key key, this.data}) : super(key: key);
   @override
   _GraficoState createState() => _GraficoState();
 }
 
 class _GraficoState extends State<Grafico> {
-  var data;
 
-  @override
-  void initState() {
-    super.initState();
-    var r = Random();
-    data = List<double>.generate(30, (i) => r.nextDouble() * 500);
-  }
 
   _onSelectionChange(SelectionModel model) {
     final selectedDatum = model.selectedDatum;
@@ -42,7 +38,7 @@ class _GraficoState extends State<Grafico> {
         colorFn: (_,__)=> MaterialPalette.purple.shadeDefault,
         domainFn: (value, index) => index,
         measureFn: (value, _)=> value,
-        data: data,
+        data: widget.data,
         strokeWidthPxFn: (_,__) => 4,
       )
 
