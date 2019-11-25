@@ -191,8 +191,10 @@ class HomePageTagit extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.pages, color: Colors.deepPurple),
-            title: Text('Mi informacion'),
-            onTap: () {},
+            title: Text('Home'),
+            onTap: () {
+              Navigator.pushNamed(context, 'home');
+            },
           ),
           ListTile(
             leading: Icon(Icons.pages, color: Colors.deepPurple),
