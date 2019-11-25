@@ -1,6 +1,10 @@
-import 'package:apptagit/src/pages/grafico.dart';
+import 'dart:async';
+
+import 'package:apptagit/src/pages/mes_widget.dart';
+
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Estadisticas extends StatefulWidget {
   @override
@@ -10,11 +14,18 @@ class Estadisticas extends StatefulWidget {
 class _EstadisticasState extends State<Estadisticas> {
   PageController _controller;
   int currentPage = 8;
+  int currentIndex = 0;
+
+  Stream<QuerySnapshot> _query;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    _query = Firestore.instance
+        .collection('Cobros')
+        .where("mes", isEqualTo: currentPage + 1)
+        .snapshots();
+
     _controller = PageController(
       initialPage: currentPage,
       viewportFraction: 0.3,
@@ -24,6 +35,11 @@ class _EstadisticasState extends State<Estadisticas> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Estadisticas mensuales'),
+        backgroundColor: Colors.deepPurple,
+      ),
+      drawer: _newMenu(context),
       body: _body(),
     );
   }
@@ -33,13 +49,17 @@ class _EstadisticasState extends State<Estadisticas> {
       child: Column(
         children: <Widget>[
           _mes(),
-          _costoTotalTag(),
-          _grafico(),
-          Container(
-            color: Colors.deepPurpleAccent.withOpacity(0.15),
-            height: 8.0,
+          StreamBuilder<QuerySnapshot>(
+            stream: _query,
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> data) {
+              if (data.hasData) {
+                return MonthWidget(
+                  documents: data.data.documents,
+                );
+              }
+              return Center(child: CircularProgressIndicator());
+            },
           ),
-          _listaTag(),
         ],
       ),
     );
@@ -49,7 +69,9 @@ class _EstadisticasState extends State<Estadisticas> {
     var _alignmen;
 
     final selected = TextStyle(
-        fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurpleAccent);
+        fontSize: 20.0,
+        fontWeight: FontWeight.bold,
+        color: Colors.deepPurpleAccent);
 
     final unselected = TextStyle(
         fontSize: 18.0,
@@ -76,9 +98,13 @@ class _EstadisticasState extends State<Estadisticas> {
     return SizedBox.fromSize(
         size: Size.fromHeight(70.0),
         child: PageView(
-          onPageChanged: (newPage){
+          onPageChanged: (newPage) {
             setState(() {
-             currentPage = newPage;
+              currentPage = newPage;
+              _query = Firestore.instance
+                  .collection('Cobros')
+                  .where("mes", isEqualTo: currentPage + 1)
+                  .snapshots();
             });
           },
           controller: _controller,
@@ -99,80 +125,47 @@ class _EstadisticasState extends State<Estadisticas> {
         ));
   }
 
-  Widget _grafico() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(height: 200.0, child: Grafico()),
-    );
-  }
-
-  Widget _item(IconData icon, String nombre, int percent, double value) {
-    return ListTile(
-      leading: Icon(icon, size: 32.0),
-      title: Text(
-        nombre,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20.0,
-        ),
-      ),
-      subtitle: Text(
-        "$percent% del cobro",
-        style: TextStyle(
-          fontSize: 16.0,
-          color: Colors.deepPurple,
-        ),
-      ),
-      trailing: Container(
-        decoration: BoxDecoration(
-          color: Colors.deepPurple.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            "\$$value",
-            style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-                fontSize: 16.0),
+  Drawer _newMenu(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: Container(),
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('asset/fondo2.jpg'), fit: BoxFit.cover)),
           ),
-        ),
+          ListTile(
+            leading: Icon(Icons.pages, color: Colors.deepPurple),
+            title: Text('Home'),
+            onTap: () {
+              Navigator.pushNamed(context, 'home');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.pages, color: Colors.deepPurple),
+            title: Text('Mis Autos'),
+            onTap: () {
+              Navigator.pushNamed(context, 'autos');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.pages, color: Colors.deepPurple),
+            title: Text('Mis socios'),
+            onTap: () {
+              Navigator.pushNamed(context, 'socios');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.pages, color: Colors.deepPurple),
+            title: Text('Mis estadisticas'),
+            onTap: () {
+              Navigator.pushNamed(context, 'estadisticas');
+            },
+          ),
+        ],
       ),
-    );
-  }
-
-  Widget _listaTag() {
-    return Expanded(
-      child: ListView.separated(
-        itemCount: 15,
-        itemBuilder: (BuildContext context, int index) =>
-            _item(FontAwesomeIcons.car, "costo", 14, 145.12),
-        separatorBuilder: (BuildContext context, int index) {
-          return Container(
-            color: Colors.deepPurpleAccent.withOpacity(0.15),
-            height: 3.0,
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _costoTotalTag() {
-    return Column(
-      children: <Widget>[
-        Text(
-          "\$2365.1",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40.0),
-        ),
-        Text(
-          "total a pagar",
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16.0,
-              color: Colors.blueGrey),
-        ),
-      ],
     );
   }
 }
