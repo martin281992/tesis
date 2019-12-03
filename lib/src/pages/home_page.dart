@@ -1,7 +1,6 @@
 import 'package:apptagit/src/pages/agregar_coordenada.dart';
 import 'package:apptagit/src/pages/autos.dart';
 import 'package:apptagit/src/pages/home.dart';
-import 'package:apptagit/src/pages/socios.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter/material.dart' as prefix0;
 
@@ -33,8 +32,8 @@ class _HomePageState extends State<HomePage> {
         return HomePageTagit();
       case 1:
         return Autos();
-      case 2:
-        return Socios();
+     /* case 2:
+        return Socios();*/
     }
   }
 

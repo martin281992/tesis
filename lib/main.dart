@@ -11,13 +11,11 @@ import 'package:apptagit/src/bloc/provider.dart';
 import 'package:apptagit/src/pages/login_page.dart';
 import 'package:apptagit/src/pages/inicio.dart';
 import 'package:apptagit/src/pages/autos.dart';
-import 'package:apptagit/src/pages/socios.dart';
 import 'package:apptagit/src/pages/home.dart';
 import 'package:apptagit/src/pages/agregar_autos.dart';
 import 'package:apptagit/src/pages/registro_page.dart';
 import 'package:apptagit/src/share_pref/preferencias_usuario.dart';
 import 'package:apptagit/src/pages/home_page.dart';
-import 'package:apptagit/src/pages/agregar__socios.dart';
 
 //import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,11 +40,9 @@ class MyApp extends StatelessWidget {
           'register': (BuildContext context) => RegisterPage(),
           'inicio': (BuildContext context) => InicioPage(),
           'autos': (BuildContext context) => Autos(),
-          'socios': (BuildContext context) => Socios(),
           'homealternative': (BuildContext context) => HomePage(),
           'home': (BuildContext context) => HomePageTagit(),
           'addcar': (BuildContext context) => AgregarAutos(),
-          'addsocio': (BuildContext context) => AgregarSocios(),
           'admin': (BuildContext context) => AgregarCoordenada(),
           'login_socios': (BuildContext context) => LoginSocios(),
           'estadisticas': (BuildContext context) => Estadisticas(),
