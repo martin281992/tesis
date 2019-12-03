@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 //import 'package:appTagit/src/utils/utils.dart' as utils;
 import 'package:apptagit/src/models/sociosModel.dart';
 import 'package:apptagit/src/providers/socios_provider.dart';
+import 'package:apptagit/src/bloc/provider.dart';
 
 class AgregarSocios extends StatefulWidget {
   @override
@@ -18,12 +19,12 @@ class _AgregarAutosState extends State<AgregarSocios> {
 
   @override
   Widget build(BuildContext context) {
-    final SociosModel sociosData = ModalRoute.of(context).settings.arguments;
+    //final SociosModel sociosData = ModalRoute.of(context).settings.arguments;
 
-    if (sociosData != null) {
+    /*if (sociosData != null) {
       socio = sociosData;
       print(sociosData);
-    }
+    }*/
     return Scaffold(
       key: scaffolkey,
       appBar: AppBar(
@@ -53,6 +54,8 @@ class _AgregarAutosState extends State<AgregarSocios> {
                 _crearCorreo(),
                 SizedBox(height: 20.0),
                 _crearInformacion(),
+                SizedBox(height: 20.0),
+                _agregarSocioPadre(context),
                 SizedBox(height: 20.0),
                 _estado(),
                 SizedBox(
@@ -145,6 +148,27 @@ class _AgregarAutosState extends State<AgregarSocios> {
     );
   }
 
+  Widget _agregarSocioPadre(BuildContext context) {
+    final bloc = Provider.of(context);
+
+    return TextFormField(
+      enabled: false,
+      initialValue: bloc.email,
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(
+        labelText: '',
+      ),
+      onSaved: (value) => socio.encargado = value,
+      validator: (value) {
+        if (value.length < 4) {
+          return 'ingrese el nombre correctamente';
+        } else {
+          return null;
+        }
+      },
+    );
+  }
+
   Widget _submitButton(BuildContext context) {
     return RaisedButton.icon(
       shape: RoundedRectangleBorder(
@@ -160,17 +184,11 @@ class _AgregarAutosState extends State<AgregarSocios> {
   }
 
   _triggerSubmite() {
-    // aca retornamos un boleano si el formulario se completa bien
-    //si no es asi indicara en rojo en los campos
-
     if (!newkey.currentState.validate()) return;
-    // si no es valido quiere decir que todos los campos son correctos y se va abajo
-
     newkey.currentState.save();
     setState(() {
       _buttondisable = true;
     });
-
     if (socio.id == null) {
       socioProvider.addsocio(socio);
     } else {
@@ -178,22 +196,16 @@ class _AgregarAutosState extends State<AgregarSocios> {
     }
 
     mostrasMensaje('Registro ingresado');
-     setState(() {
+    setState(() {
       _buttondisable = false;
     });
     Navigator.pop(context);
   }
-
   void mostrasMensaje(String mensaje) {
     final msje = SnackBar(
       content: Text(mensaje),
       duration: Duration(milliseconds: 5000),
     ); //para utilizar snackbar se necesita una referencia al scaffold quien puede emitir o mostrar el snackbar
-    //se debe crear una key para ello
-
-    //con el key añadida en el Scaffold
-
     scaffolkey.currentState.showSnackBar(msje);
   }
-
 }

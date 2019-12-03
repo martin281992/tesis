@@ -14,6 +14,7 @@ class SociosModel {
     String correo;
     String informacion;
     bool estado;
+    String encargado;
 
     SociosModel({
         this.id,
@@ -21,6 +22,7 @@ class SociosModel {
         this.correo,
         this.informacion,
         this.estado = true,
+        this.encargado,
     });
 
     factory SociosModel.fromJson(Map<String, dynamic> json) => SociosModel(
@@ -29,6 +31,7 @@ class SociosModel {
         correo: json["correo"],
         informacion: json["informacion"],
         estado: json["estado"],
+        encargado: json["encargado"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -37,6 +40,7 @@ class SociosModel {
         "correo": correo,
         "informacion": informacion,
         "estado": estado,
+        "encargado": encargado,
     };
 }
 

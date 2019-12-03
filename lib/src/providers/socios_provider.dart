@@ -3,6 +3,8 @@ import 'package:apptagit/src/share_pref/preferencias_usuario.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:apptagit/src/models/sociosModel.dart';
+import 'package:apptagit/src/bloc/provider.dart';
+
 
 class SocioProvider {
   final String _url = 'https://tagit-813ec.firebaseio.com';
@@ -29,10 +31,13 @@ class SocioProvider {
 
   Future<List<SociosModel>> listSocios() async {
     //final url = '$_url/socios.json?auth=${_prefes.token}';
+
     final url = '$_url/socios.json';
     final resp = await http.get(url);
 
     final Map<String, dynamic> decodeData = json.decode(resp.body);
+
+
     final List<SociosModel> socios = new List();
 
     //  print(decodeData);
@@ -41,9 +46,9 @@ class SocioProvider {
     decodeData.forEach((id, data) {
       final sociosTemp = SociosModel.fromJson(data);
       sociosTemp.id = id;
+      //final encargadoTemp = ${data['encargado']};
       socios.add(sociosTemp);
     });
-    print(socios[0].id);
     return socios;
   }
 
