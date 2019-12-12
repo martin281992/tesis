@@ -109,7 +109,7 @@ class _AddSociosCloudState extends State<AddSociosCloud> {
                   correo: _emailControler.text,
                   encargado: bloc.email,
                   informacion: _informacionControler.text,
-                  id : widget.socio.id);
+                  id: widget.socio.id);
 
               FirestoreService().updateSocio(socio);
             } else {
@@ -212,7 +212,7 @@ class _AddSociosCloudState extends State<AddSociosCloud> {
       //initialValue: bloc.email,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
-        labelText: '${bloc.email}',
+        labelText: 'Encargado',
       ),
 
       //onSaved: (value) => socio.encargado = value,
