@@ -1,3 +1,4 @@
+import 'package:apptagit/src/cloudstore/cobros.dart';
 import 'package:apptagit/src/cloudstore/sociosCloud.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -31,14 +32,14 @@ class FirestoreService {
     return _db.collection('socios').add(socio.toMap());
   }
 
-  Future<void> deleteSocio(String id){
-
+  Future<void> deleteSocio(String id) {
     return _db.collection('socios').document(id).delete();
-
   }
 
   Future<void> updateSocio(Socios socio) {
-    return _db.collection('socios').document(socio.id).updateData(socio.toMap());
+    return _db
+        .collection('socios')
+        .document(socio.id)
+        .updateData(socio.toMap());
   }
-
 }

@@ -131,7 +131,11 @@ class _AgregarCoordenadaState extends State<AgregarCoordenada> {
 
   Widget _costoPortal(context) {
     return TextFormField(
+      keyboardType: TextInputType.number,
       textInputAction: TextInputAction.next,
+      inputFormatters: <TextInputFormatter>[
+        WhitelistingTextInputFormatter.digitsOnly
+      ],
       onEditingComplete: () {
         FocusScope.of(context).requestFocus(_focusFiel);
       },
@@ -264,6 +268,7 @@ class _AgregarCoordenadaState extends State<AgregarCoordenada> {
       onEditingComplete: () {
         FocusScope.of(context).requestFocus(_focusFiel);
       },
+
       controller: _coordenadaLonControler,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(

@@ -1,9 +1,18 @@
+import 'package:apptagit/src/cloudstore/encargados.dart';
+import 'package:apptagit/src/cloudstore/portalesService.dart';
 import 'package:apptagit/src/providers/car_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 //import 'package:apptagit/src/utils/utils.dart' as utils;
 import 'package:apptagit/src/models/carModel.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class AgregarAutos extends StatefulWidget {
+  final Encargo encargado;
+
+  const AgregarAutos({Key key, this.encargado}) : super(key: key);
+
   @override
   _AgregarAutosState createState() => _AgregarAutosState();
 }
@@ -12,6 +21,7 @@ class _AgregarAutosState extends State<AgregarAutos> {
   final newkey = GlobalKey<FormState>();
   final scaffolkey = GlobalKey<ScaffoldState>(); // key para enlazar el snackbar
   final carProvider = new CarProvider();
+  var selectedType, selectedCurrency;
 
   //creacion de carro
   CarModel car = new CarModel();
@@ -60,6 +70,74 @@ class _AgregarAutosState extends State<AgregarAutos> {
                 SizedBox(
                   height: 20.0,
                 ),
+                StreamBuilder<QuerySnapshot>(
+                    stream: Firestore.instance.collection("socios").snapshots(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData)
+                        const Text("Loading.....");
+                      else {
+                        List<DropdownMenuItem> currencyItems = [];
+                        for (int i = 0;
+                            i < snapshot.data.documents.length;
+                            i++) {
+                          DocumentSnapshot snap = snapshot.data.documents[i];
+                          currencyItems.add(
+                            DropdownMenuItem(
+                              child: Text(
+                                snap.data['nombre'],
+                                style:
+                                    TextStyle(color: Colors.deepPurpleAccent),
+                              ),
+                              value: "${snap.data['nombre']}",
+                            ),
+                          );
+                        }
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(FontAwesomeIcons.personBooth,
+                                size: 25.0, color: Colors.deepPurpleAccent),
+                            SizedBox(width: 50.0),
+                            DropdownButton(
+                              items: currencyItems,
+                              onChanged: (currencyValue) {
+                                final snackBar = SnackBar(
+                                  content: Text(
+                                    'El encargado de este auto es $currencyValue',
+                                    style: TextStyle(
+                                        color: Colors.deepPurpleAccent),
+                                  ),
+                                );
+                                Scaffold.of(context).showSnackBar(snackBar);
+                                setState(() {
+                                  selectedCurrency = currencyValue;
+
+                                  if (selectedCurrency != null) {
+                                    // getCurrency(selectedCurrency);
+
+                                    /*Encargo encargado = Encargo(
+
+                                        nombreEncargado:selectedCurrency,
+                                        nombreAuto:
+
+                                    );
+                                    FirestoreService().addEncargado(encargado);*/
+                                  } else {
+                                    print(selectedCurrency);
+                                  }
+                                });
+                              },
+                              value: selectedCurrency,
+                              isExpanded: false,
+                              hint: new Text(
+                                "Elige al socio para tu auto",
+                                style: TextStyle(color: Colors.deepPurple),
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                    }),
                 _submitButton(context)
               ],
             ),

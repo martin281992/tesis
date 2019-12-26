@@ -1,10 +1,13 @@
 import 'dart:async';
 
 import 'package:apptagit/src/pages/mes_widget.dart';
+import 'package:apptagit/src/utils/utils.dart';
 
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class Estadisticas extends StatefulWidget {
   @override
@@ -13,7 +16,7 @@ class Estadisticas extends StatefulWidget {
 
 class _EstadisticasState extends State<Estadisticas> {
   PageController _controller;
-  int currentPage = 8;
+  int currentPage = DateTime.now().month - 1;
   int currentIndex = 0;
 
   Stream<QuerySnapshot> _query;
@@ -39,7 +42,6 @@ class _EstadisticasState extends State<Estadisticas> {
         title: Text('Estadisticas mensuales'),
         backgroundColor: Colors.deepPurple,
       ),
-      drawer: _newMenu(context),
       body: _body(),
     );
   }
@@ -54,7 +56,9 @@ class _EstadisticasState extends State<Estadisticas> {
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> data) {
               if (data.hasData) {
                 return MonthWidget(
+                  dias: diasEnMes(currentPage + 1),
                   documents: data.data.documents,
+                  mes: currentPage,
                 );
               }
               return Center(child: CircularProgressIndicator());
@@ -123,49 +127,5 @@ class _EstadisticasState extends State<Estadisticas> {
             _pageItem('Diciembre', 11),
           ],
         ));
-  }
-
-  Drawer _newMenu(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: Container(),
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('asset/fondo2.jpg'), fit: BoxFit.cover)),
-          ),
-          ListTile(
-            leading: Icon(Icons.pages, color: Colors.deepPurple),
-            title: Text('Home'),
-            onTap: () {
-              Navigator.pushNamed(context, 'home');
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.pages, color: Colors.deepPurple),
-            title: Text('Mis Autos'),
-            onTap: () {
-              Navigator.pushNamed(context, 'autos');
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.pages, color: Colors.deepPurple),
-            title: Text('Mis socios'),
-            onTap: () {
-              Navigator.pushNamed(context, 'socios');
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.pages, color: Colors.deepPurple),
-            title: Text('Mis estadisticas'),
-            onTap: () {
-              Navigator.pushNamed(context, 'estadisticas');
-            },
-          ),
-        ],
-      ),
-    );
   }
 }

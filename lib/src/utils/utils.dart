@@ -24,3 +24,13 @@ void mostrarAlerta(BuildContext context, String message) {
         );
       });
 }
+
+int diasEnMes(int mes) {
+  var actual = DateTime.now();
+
+  var ultimoDia = (mes < 12)
+      ? new DateTime(actual.year, mes + 1, 0)
+      : new DateTime(actual.year + 1, 1, 0);
+
+  return ultimoDia.day;
+}

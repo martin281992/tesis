@@ -1,8 +1,10 @@
 import 'package:apptagit/src/cloudstore/firestore_service.dart';
+import 'package:apptagit/src/cloudstore/sociosCloud.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:apptagit/src/cloudstore/sociosCloud.dart';
 import 'package:apptagit/src/bloc/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AddSociosCloud extends StatefulWidget {
   // AddSociosCloud({Key key}) : super(key: key);
@@ -20,6 +22,7 @@ class _AddSociosCloudState extends State<AddSociosCloud> {
   TextEditingController _emailControler;
   TextEditingController _encargadoControler;
   TextEditingController _informacionControler;
+  TextEditingController selectedCurrency;
   FocusNode _focusFiel;
   FocusNode _focusFiel2;
 
@@ -35,6 +38,7 @@ class _AddSociosCloudState extends State<AddSociosCloud> {
         TextEditingController(text: isEditMode ? widget.socio.encargado : '');
     _informacionControler =
         TextEditingController(text: isEditMode ? widget.socio.informacion : '');
+
     _focusFiel = FocusNode();
     _focusFiel2 = FocusNode();
   }
@@ -43,6 +47,7 @@ class _AddSociosCloudState extends State<AddSociosCloud> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> _accounttype = <String>['hola', 'chao', 'algo'];
     return Scaffold(
       // key: scaffolkey,
       appBar: AppBar(
@@ -75,7 +80,6 @@ class _AddSociosCloudState extends State<AddSociosCloud> {
               SizedBox(height: 20.0),
               _agregarSocioPadre(context),
               SizedBox(height: 20.0),
-              //_estado(),
               SizedBox(
                 height: 20.0,
               ),
@@ -124,7 +128,7 @@ class _AddSociosCloudState extends State<AddSociosCloud> {
             //print("entro a agregar socio");
 
             //print(socio);
-            Navigator.pop(context);
+            Navigator.pushNamed(context, 'socioscloud');
           } catch (e) {
             print(e);
           }
@@ -212,7 +216,7 @@ class _AddSociosCloudState extends State<AddSociosCloud> {
       //initialValue: bloc.email,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
-        labelText: 'Encargado',
+        labelText: bloc.email,
       ),
 
       //onSaved: (value) => socio.encargado = value,

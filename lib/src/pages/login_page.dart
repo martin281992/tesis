@@ -135,12 +135,12 @@ class LoginPage extends StatelessWidget {
     Map info = await userProvider.login(bloc.email, bloc.password);
 
     if (info['ok'] && bloc.email == 'martin.berkhoff2@gmail.com') {
-      Navigator.pushReplacementNamed(context, 'admin');
+      await Navigator.pushReplacementNamed(context, 'admin');
     } else if (info['ok']) {
-      Navigator.pushReplacementNamed(context, 'homealternative');
+      Navigator.pushReplacementNamed(context, 'home2');
       print(info);
     } else {
-      await mostrarAlerta(context, info['message']);
+      mostrarAlerta(context, info['message']);
       Navigator.pushReplacementNamed(context, 'login');
     }
   }

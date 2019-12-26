@@ -1,6 +1,8 @@
 import 'package:apptagit/src/pages/addSociosCloud.dart';
 import 'package:apptagit/src/pages/agregar_coordenada.dart';
+import 'package:apptagit/src/pages/detalleCobro.dart';
 import 'package:apptagit/src/pages/estadisticas.dart';
+import 'package:apptagit/src/pages/home2.dart';
 import 'package:apptagit/src/pages/login_page_socio.dart';
 import 'package:apptagit/src/pages/portales.dart';
 import 'package:apptagit/src/pages/sociosCloud.dart';
@@ -16,11 +18,11 @@ import 'package:apptagit/src/pages/home.dart';
 import 'package:apptagit/src/pages/agregar_autos.dart';
 import 'package:apptagit/src/pages/registro_page.dart';
 import 'package:apptagit/src/share_pref/preferencias_usuario.dart';
-import 'package:apptagit/src/pages/home_page.dart';
 
 //import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   final prefs = new PreferenciasUsuario();
   await prefs.initPrefs();
   runApp(MyApp());
@@ -35,13 +37,12 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Material App',
-        initialRoute: 'admin',
+        initialRoute: 'home2',
         routes: {
           'login': (BuildContext context) => LoginPage(),
           'register': (BuildContext context) => RegisterPage(),
           'inicio': (BuildContext context) => InicioPage(),
           'autos': (BuildContext context) => Autos(),
-          'homealternative': (BuildContext context) => HomePage(),
           'home': (BuildContext context) => HomePageTagit(),
           'addcar': (BuildContext context) => AgregarAutos(),
           'admin': (BuildContext context) => AgregarCoordenada(),
@@ -50,6 +51,17 @@ class MyApp extends StatelessWidget {
           'socioscloud': (BuildContext context) => SociosCloud(),
           'addsocioscloud': (BuildContext context) => AddSociosCloud(),
           'portales': (BuildContext context) => Portales(),
+          'home2': (BuildContext context) => Home2(),
+        },
+        onGenerateRoute: (settings) {
+          if (settings.name == 'detalle') {
+            ParametrosDetalle params = settings.arguments;
+            return MaterialPageRoute(builder: (BuildContext context) {
+              return DetalleCobro(
+                params: params,
+              );
+            });
+          }
         },
         theme: ThemeData(
           primaryColor: Colors.deepPurple,

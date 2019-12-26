@@ -33,18 +33,8 @@ class _HomePageTagitState extends State<HomePageTagit> {
           title: Text('No te dejes cobrar de mas'),
           backgroundColor: Colors.deepPurple,
         ),
-        drawer: _newMenu(context, data),
+        drawer: _newMenu(data),
         body: _body());
-  }
-
-  Widget stream(BuildContext context) {
-    return StreamBuilder<List<Portal>>(
-        stream: FirestoreService().getPortales(),
-        builder: (BuildContext context, AsyncSnapshot<List<Portal>> snapshot) {
-          if (snapshot.hasData) {
-            print(snapshot.data.length);
-          }
-        });
   }
 
   Widget _titulos() {
@@ -76,29 +66,20 @@ class _HomePageTagitState extends State<HomePageTagit> {
     );
   }
 
-  void getData() {
-    final databaseReference = Firestore.instance;
-    databaseReference
-        .collection("portales")
-        .getDocuments()
-        .then((QuerySnapshot snapshot) {
-      snapshot.documents.forEach((f) => print('${f.data}}'));
-    });
-  }
-
   _body() {
     return StreamBuilder(
       stream: FirestoreService().getPortales(),
       builder: (BuildContext context, AsyncSnapshot<List<Portal>> snapshot) {
-        var count = snapshot.data.length;
-        print(count);
+        //var count = snapshot.data.length;
+        //print(count);
         if (snapshot.hasError || !snapshot.hasData)
           return CircularProgressIndicator();
 
         return ListView.builder(
-            itemCount: snapshot.data.length,
+            itemCount: snapshot.data.length - (snapshot.data.length - 1),
             itemBuilder: (BuildContext context, int index) {
-              Portal portal = snapshot.data[index];
+              // Portal portal = snapshot.data[index];
+
               StreamSubscription<LocationData> locationSubscription;
 
               var location = new Location();
@@ -110,8 +91,10 @@ class _HomePageTagitState extends State<HomePageTagit> {
 
                   var arr = [];
 
-                  for (var i = 0; i < count; i++) {
+                  for (var i = 0; i < snapshot.data.length; i++) {
                     var temp = snapshot.data[i];
+
+                    var cuanto = snapshot.data.length;
 
                     if (locationemit == temp.longitud &&
                         locationemit2 == temp.latitud) {
@@ -119,23 +102,26 @@ class _HomePageTagitState extends State<HomePageTagit> {
                       //print(temp.costo);
                       arr.add(temp.longitud);
                       arr.add(temp.latitud);
-                      print('dentro del if ${arr}');
 
                       int valor = int.parse(temp.costo);
 
                       final muyFuture =
-                          Future.delayed(Duration(seconds: 10), () {
+                          Future.delayed(Duration(seconds: 2), () {
                         Cobros cobro = Cobros(
                             categoria: 'tag', dia: 5, mes: 12, valor: valor);
+
+                        print('dentro del if ${cuanto}');
+
                         //FirestoreService().addCobro(cobro);
                       });
                       //FirestoreService().addCobro(cobro))
 
                       locationSubscription.pause();
+
+                      var timer = Timer(Duration(seconds: 60),
+                          () => locationSubscription.resume());
                     }
                   }
-                  var timer = Timer(Duration(seconds: 60),
-                      () => locationSubscription.resume());
 
                   //if (locationemit == temp.longitud) {}
                 },
@@ -148,7 +134,7 @@ class _HomePageTagitState extends State<HomePageTagit> {
     );
   }
 
-  Drawer _newMenu(BuildContext context, data) {
+  Drawer _newMenu(data) {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -192,5 +178,3 @@ class _HomePageTagitState extends State<HomePageTagit> {
     );
   }
 }
-
-class NumberCreator {}
