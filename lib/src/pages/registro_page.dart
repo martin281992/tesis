@@ -108,10 +108,6 @@ class RegisterPage extends StatelessWidget {
   }
 
   Widget _crearBoton(LoginBloc bloc) {
-    // formValidStream
-    // snapshot.hasData
-    //  true ? algo si true : algo si false
-
     return StreamBuilder(
       stream: bloc.formValidStream,
       builder: (BuildContext context, AsyncSnapshot snapshot) {

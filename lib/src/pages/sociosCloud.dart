@@ -44,11 +44,6 @@ class _SociosCloudState extends State<SociosCloud> {
                           MaterialPageRoute(
                             builder: (_) => AddSociosCloud(socio: socio),
                           )),
-                      /* onPressed:
-                      () => Navigator.push(context,
-                          MaterialPageRoute(
-                            builder: (_) => AddSociosCloud(socio: socio),
-                          )),*/
                     ),
                     IconButton(
                       color: Colors.red,

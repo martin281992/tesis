@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:apptagit/src/bloc/provider.dart';
 
 class AddSociosCloud extends StatefulWidget {
-  // AddSociosCloud({Key key}) : super(key: key);
   final Socios socio;
   const AddSociosCloud({Key key, this.socio}) : super(key: key);
 
@@ -15,7 +14,6 @@ class AddSociosCloud extends StatefulWidget {
 
 class _AddSociosCloudState extends State<AddSociosCloud> {
   final _key = GlobalKey<FormState>();
-  //GlobalKey<FormState> _key = GlobalKey<FormState>();
   TextEditingController _nombreControler;
   TextEditingController _emailControler;
   TextEditingController _encargadoControler;
@@ -45,7 +43,6 @@ class _AddSociosCloudState extends State<AddSociosCloud> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // key: scaffolkey,
       appBar: AppBar(
         title: Text(
             isEditMode ? 'Actualiza informacion' : 'Agrega un nuevo socio'),
@@ -65,7 +62,6 @@ class _AddSociosCloudState extends State<AddSociosCloud> {
         padding: EdgeInsets.all(30.0),
         child: Form(
           key: _key,
-          //child obligatorio de los FORM
           child: Column(
             children: <Widget>[
               _crearNombre(context),
@@ -98,7 +94,6 @@ class _AddSociosCloudState extends State<AddSociosCloud> {
       textColor: Colors.white,
       label: Text(isEditMode ? 'Actualizar' : 'guardar'),
       icon: Icon(Icons.save),
-      //usamos el trigger para que se apliquen las validaciones
       onPressed: () async {
         if (_key.currentState.validate()) {
           _key.currentState.save();
@@ -121,9 +116,7 @@ class _AddSociosCloudState extends State<AddSociosCloud> {
 
               await FirestoreService().addSocio(socio);
             }
-            //print("entro a agregar socio");
 
-            //print(socio);
             Navigator.pushNamed(context, 'socioscloud');
           } catch (e) {
             print(e);
@@ -153,7 +146,6 @@ class _AddSociosCloudState extends State<AddSociosCloud> {
       decoration: InputDecoration(
         labelText: 'Nombre',
       ),
-      //onSaved: (value) => socio.nombre = value,
     );
   }
 
@@ -176,7 +168,6 @@ class _AddSociosCloudState extends State<AddSociosCloud> {
       decoration: InputDecoration(
         labelText: 'Correo',
       ),
-      //onSaved: (value) => socio.nombre = value,
     );
   }
 

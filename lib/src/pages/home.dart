@@ -101,18 +101,7 @@ class _ListPageState extends State<ListPage> {
 
                   String horasub = horaformat.substring(0, 2);
                   var hora = int.parse(horasub);
-                  //print(hora);
 
-                  //arreglo hora
-                  /*var horatemp2 = new DateFormat('hh:mm a');
-                  String horaformat2 = horatemp2.format(now);
-                  String horasub3 = horaformat2.substring(0, 2);
-
-                  String horasub2 = horaformat2.substring(2, 8);
-                  var horasub33 = int.parse(horasub3);
-                  var horasub333 = horasub33 - 3;
-                  //hora corregida para agregar al cobro
-                  */
                   var horafinal;
                   String tarifa;
 
@@ -130,22 +119,6 @@ class _ListPageState extends State<ListPage> {
                     tarifa = 'Tarifa baja';
                   }
 
-                  //print(horaformat);
-                  //horario tarifa alta
-                  /*
-                  if (hora >= 11 && hora <= 13 || hora >= 21 && hora <= 23) {
-                    valor = int.parse(temp.costoAlta);
-                    tarifa = 'Tarifa alta';
-                    horafinal = horasub333.toString() + horasub2;
-                  } else if (hora >= 17 && hora <= 19) {
-                    valor = int.parse(temp.costoMedia);
-                    tarifa = 'Tarifa media';
-                    horafinal = horasub333.toString() + horasub2;
-                  } else {
-                    valor = int.parse(temp.costo);
-                    horafinal = horaformat2;
-                    tarifa = 'Tarifa baja';
-                  } */
                   String categoria;
 
                   if (temp.categoria == 'Tag') {
@@ -191,31 +164,13 @@ class _ListPageState extends State<ListPage> {
                   } else {
                     print('no entro');
                   }
-                  /*
-                      categoria = '';
-                      dia = 0;
-                      mes = 0;
-                      valor = 0;
-                      temp.nombreP = '';
-                      temp.nombreC = '';
-                      horafinal = '';
-                      */
-
-                  //FirestoreService().addCobro(cobro))
-
                 }
               }
-              // Timer(Duration(seconds: 15), () => locationSubscription.resume());
-
-              //if (locationemit == temp.longitud) {}
             },
           );
 
-          // return ListTile();
           return ListTile();
         }
-
-        // Portal portal = snapshot.data[index];
       },
     );
   }
@@ -234,7 +189,6 @@ class _ListPageState extends State<ListPage> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      //color: Color.fromRGBO(8, 192, 218, 0.0),
     );
   }
 
