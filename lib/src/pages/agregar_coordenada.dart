@@ -22,6 +22,10 @@ class _AgregarCoordenadaState extends State<AgregarCoordenada> {
   TextEditingController _nombrePortalControler;
   TextEditingController _consecionariaControler;
   TextEditingController _costoControler;
+  TextEditingController _costoMediaControler;
+
+  TextEditingController _costoAltaControler;
+
   TextEditingController _coordenadaLonControler;
   TextEditingController _coordenadaLatControler;
 
@@ -36,6 +40,10 @@ class _AgregarCoordenadaState extends State<AgregarCoordenada> {
         TextEditingController(text: isEditMode ? widget.portal.nombreP : '');
     _costoControler =
         TextEditingController(text: isEditMode ? widget.portal.costo : '');
+    _costoMediaControler =
+        TextEditingController(text: isEditMode ? widget.portal.costoMedia : '');
+    _costoAltaControler =
+        TextEditingController(text: isEditMode ? widget.portal.costoAlta : '');
     _consecionariaControler =
         TextEditingController(text: isEditMode ? widget.portal.nombreC : '');
 
@@ -68,13 +76,16 @@ class _AgregarCoordenadaState extends State<AgregarCoordenada> {
               _nombrePortal(context),
               SizedBox(height: 20.0),
               _costoPortal(context),
-              SizedBox(height: 20.0),
+              SizedBox(height: 10.0),
+              _costoMediaPortal(context),
+              SizedBox(height: 10.0),
+              _costoAltaPortal(context),
+              SizedBox(height: 10.0),
               _coordenadaLon(context),
-              SizedBox(height: 20.0),
               _coordenadaLat(context),
-              SizedBox(height: 20.0),
+              SizedBox(height: 10.0),
               SizedBox(
-                height: 20.0,
+                height: 10.0,
               ),
               _submitButton2(context),
               _submitButton(context),
@@ -148,6 +159,54 @@ class _AgregarCoordenadaState extends State<AgregarCoordenada> {
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
         labelText: 'Costo horario normal',
+      ),
+      //onSaved: (value) => socio.nombre = value,
+    );
+  }
+
+  Widget _costoMediaPortal(context) {
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      textInputAction: TextInputAction.next,
+      inputFormatters: <TextInputFormatter>[
+        WhitelistingTextInputFormatter.digitsOnly
+      ],
+      onEditingComplete: () {
+        FocusScope.of(context).requestFocus(_focusFiel);
+      },
+      controller: _costoMediaControler,
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Please enter some text';
+        }
+      },
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(
+        labelText: 'Costo horario medio',
+      ),
+      //onSaved: (value) => socio.nombre = value,
+    );
+  }
+
+  Widget _costoAltaPortal(context) {
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      textInputAction: TextInputAction.next,
+      inputFormatters: <TextInputFormatter>[
+        WhitelistingTextInputFormatter.digitsOnly
+      ],
+      onEditingComplete: () {
+        FocusScope.of(context).requestFocus(_focusFiel);
+      },
+      controller: _costoAltaControler,
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Please enter some text';
+        }
+      },
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(
+        labelText: 'Costo horario alto',
       ),
       //onSaved: (value) => socio.nombre = value,
     );

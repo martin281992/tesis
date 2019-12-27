@@ -110,7 +110,7 @@ class _HomePageTagitState extends State<HomePageTagit> {
                         Cobros cobro = Cobros(
                             categoria: 'tag', dia: 5, mes: 12, valor: valor);
 
-                        print('dentro del if ${cuanto}');
+                        //print('dentro del if ${temp.nombreC}');
 
                         //FirestoreService().addCobro(cobro);
                       });

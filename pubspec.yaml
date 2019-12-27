@@ -37,6 +37,7 @@ dependencies:
   cloud_firestore: 0.13.0+1
   location: ^2.3.5
   provider: ^3.0.0
+  intl: ^0.15.2
 
 
 

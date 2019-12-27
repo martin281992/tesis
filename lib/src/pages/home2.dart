@@ -4,6 +4,7 @@ import 'package:apptagit/src/cloudstore/portalesService.dart';
 import 'package:flutter/material.dart';
 import 'package:apptagit/src/bloc/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'dart:async';
 
 import 'package:location/location.dart';
@@ -70,6 +71,7 @@ class _ListPageState extends State<ListPage> {
         return ListView.builder(
             itemCount: snapshot.data.length - (snapshot.data.length - 1),
             itemBuilder: (BuildContext context, int index) {
+              print('se llamo');
               // Portal portal = snapshot.data[index];
 
               StreamSubscription<LocationData> locationSubscription;
@@ -86,8 +88,6 @@ class _ListPageState extends State<ListPage> {
                   for (var i = 0; i < snapshot.data.length; i++) {
                     var temp = snapshot.data[i];
 
-                    var cuanto = snapshot.data.length;
-
                     if (locationemit == temp.longitud &&
                         locationemit2 == temp.latitud) {
                       //print(temp.nombreP);
@@ -96,22 +96,111 @@ class _ListPageState extends State<ListPage> {
                       arr.add(temp.latitud);
 
                       int valor = int.parse(temp.costo);
+                      var now = new DateTime.now();
 
-                      final muyFuture =
-                          Future.delayed(Duration(seconds: 2), () {
-                        Cobros cobro = Cobros(
-                            categoria: 'tag', dia: 5, mes: 12, valor: valor);
+                      var formatter = new DateFormat('yyyy-MM-dd');
+                      String formatted = formatter.format(now);
 
-                        print('dentro del if ${cuanto}');
+                      String mesTemp = formatted.substring(5, 7);
+                      String diaTemp = formatted.substring(8, 10);
 
-                        //FirestoreService().addCobro(cobro);
-                      });
+                      var dia = int.parse(diaTemp);
+                      dia = dia - 1;
+                      // print(dia);
+
+                      var mes = int.parse(mesTemp);
+
+                      var horatemp = new DateFormat('hh');
+                      String horaformat = horatemp.format(now);
+
+                      String horasub = horaformat.substring(0, 2);
+                      var hora = int.parse(horasub);
+                      //print(hora);
+
+                      //arreglo hora
+                      var horatemp2 = new DateFormat('hh:mm a');
+                      String horaformat2 = horatemp2.format(now);
+                      String horasub3 = horaformat2.substring(0, 2);
+
+                      String horasub2 = horaformat2.substring(2, 8);
+                      var horasub33 = int.parse(horasub3);
+                      var horasub333 = horasub33 - 3;
+                      //hora corregida para agregar al cobro
+                      var horafinal;
+                      String tarifa;
+
+                      print(horaformat2);
+                      //horario tarifa alta
+                      if (hora >= 11 && hora <= 13 ||
+                          hora >= 21 && hora <= 23) {
+                        valor = int.parse(temp.costoAlta);
+                        tarifa = 'Tarifa alta';
+                        horafinal = horasub333.toString() + horasub2;
+                      } else if (hora >= 17 && hora <= 19) {
+                        valor = int.parse(temp.costoMedia);
+                        tarifa = 'Tarifa media';
+                        horafinal = horasub333.toString() + horasub2;
+                      } else {
+                        valor = int.parse(temp.costo);
+                        horafinal = horaformat2;
+                        tarifa = 'Tarifa baja';
+                      }
+                      String categoria;
+
+                      if (temp.categoria == 'Tag') {
+                        categoria = temp.categoria;
+                      } else if (temp.categoria == 'Peaje') {
+                        categoria = temp.categoria;
+                      } else {
+                        categoria = temp.categoria;
+                      }
+
+                      if (categoria != null &&
+                          categoria != '' &&
+                          dia != null &&
+                          dia != 0 &&
+                          mes != null &&
+                          mes != 0 &&
+                          valor != null &&
+                          valor != 0 &&
+                          temp.nombreP != null &&
+                          temp.nombreP != '' &&
+                          temp.nombreC != null &&
+                          temp.nombreC != '' &&
+                          horafinal != null &&
+                          horafinal != '') {
+                        Future.delayed(Duration(seconds: 10), () {
+                          Cobros cobro = Cobros(
+                              categoria: categoria,
+                              dia: dia,
+                              mes: mes,
+                              valor: valor,
+                              nombrePortal: temp.nombreP,
+                              nombreCon: temp.nombreC,
+                              hora: horafinal,
+                              tarifa: tarifa);
+
+                          // FirestoreService().addCobro(cobro);
+                        });
+                        locationSubscription.pause();
+
+                        Timer(Duration(seconds: 60),
+                            () => locationSubscription.resume());
+                      } else {
+                        print('no entro');
+                      }
+                      /*
+                      categoria = '';
+                      dia = 0;
+                      mes = 0;
+                      valor = 0;
+                      temp.nombreP = '';
+                      temp.nombreC = '';
+                      horafinal = '';
+                      */
+
                       //FirestoreService().addCobro(cobro))
 
-                      locationSubscription.pause();
-
-                      var timer = Timer(Duration(seconds: 60),
-                          () => locationSubscription.resume());
                     }
                   }
 

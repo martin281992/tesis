@@ -48,6 +48,7 @@ class _DetalleCobroState extends State<DetalleCobro> {
                           .delete();
                     },
                     child: ListTile(
+                      contentPadding: EdgeInsets.symmetric(vertical: 5.0),
                       leading: Stack(
                         children: <Widget>[
                           Icon(
@@ -66,16 +67,17 @@ class _DetalleCobroState extends State<DetalleCobro> {
                         ],
                       ),
                       title: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 5.0),
                         decoration: BoxDecoration(
-                          color: Colors.blueAccent.withOpacity(0.2),
+                          color: Colors.deepPurple.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(5.0),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            "\$${document["valor"]}",
+                            " ${document["nombreCon"]} - ${document["nombrePortal"]} y su valor es \$ ${document["valor"]} y fue cobrada: ${document["hora"]} en el horario de ${document["tarifa"]} ",
                             style: TextStyle(
-                              color: Colors.blueAccent,
+                              color: Colors.purpleAccent,
                               fontWeight: FontWeight.w500,
                               fontSize: 16.0,
                             ),
