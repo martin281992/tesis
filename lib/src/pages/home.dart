@@ -128,6 +128,9 @@ class _ListPageState extends State<ListPage> {
                   } else {
                     categoria = temp.categoria;
                   }
+                  final bloc = Provider.of(context);
+
+                  String cliente = bloc.email;
 
                   if (categoria != null &&
                       categoria != '' &&
@@ -152,7 +155,8 @@ class _ListPageState extends State<ListPage> {
                           nombrePortal: temp.nombreP,
                           nombreCon: temp.nombreC,
                           hora: horafinal,
-                          tarifa: tarifa);
+                          tarifa: tarifa,
+                          cliente: cliente);
                       FirestoreService().addCobro(cobro);
                       locationSubscription.cancel();
 

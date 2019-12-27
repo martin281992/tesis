@@ -7,6 +7,7 @@ class Cobros {
   String nombreCon;
   String hora;
   String tarifa;
+  String cliente;
   String id;
 
   Cobros(
@@ -18,6 +19,7 @@ class Cobros {
       this.nombreCon,
       this.hora,
       this.tarifa,
+      this.cliente,
       this.id});
 
   Cobros.fromMap(Map<String, dynamic> data, String id)
@@ -29,6 +31,7 @@ class Cobros {
         nombreCon = data['nombreCon'],
         hora = data['hora'],
         tarifa = data['tarifa'],
+        cliente = data['cliente'],
         id = id;
 
   Map<String, dynamic> toMap() {
@@ -41,6 +44,7 @@ class Cobros {
       "nombreCon": nombreCon,
       "hora": hora,
       "tarifa": tarifa,
+      "cliente": cliente,
     };
   }
 }

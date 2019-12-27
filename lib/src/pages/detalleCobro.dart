@@ -26,6 +26,7 @@ class _DetalleCobroState extends State<DetalleCobro> {
         .collection('Cobros')
         .where("mes", isEqualTo: widget.params.mes + 1)
         .where("categoria", isEqualTo: widget.params.nombre)
+        .where("cliente", isEqualTo: bloc.email)
         .snapshots();
     return Scaffold(
         appBar: AppBar(
