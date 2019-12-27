@@ -2,7 +2,6 @@ import 'package:apptagit/src/pages/addSociosCloud.dart';
 import 'package:apptagit/src/pages/agregar_coordenada.dart';
 import 'package:apptagit/src/pages/detalleCobro.dart';
 import 'package:apptagit/src/pages/estadisticas.dart';
-import 'package:apptagit/src/pages/home2.dart';
 import 'package:apptagit/src/pages/login_page_socio.dart';
 import 'package:apptagit/src/pages/portales.dart';
 import 'package:apptagit/src/pages/sociosCloud.dart';
@@ -12,7 +11,6 @@ import 'package:apptagit/src/bloc/provider.dart';
 
 //simport 'package:formvalidation/src/pages/home_page.dart';
 import 'package:apptagit/src/pages/login_page.dart';
-import 'package:apptagit/src/pages/inicio.dart';
 import 'package:apptagit/src/pages/autos.dart';
 import 'package:apptagit/src/pages/home.dart';
 import 'package:apptagit/src/pages/agregar_autos.dart';
@@ -37,11 +35,10 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Material App',
-        initialRoute: 'home2',
+        initialRoute: 'login',
         routes: {
           'login': (BuildContext context) => LoginPage(),
           'register': (BuildContext context) => RegisterPage(),
-          'inicio': (BuildContext context) => InicioPage(),
           'autos': (BuildContext context) => Autos(),
           'home': (BuildContext context) => HomePageTagit(),
           'addcar': (BuildContext context) => AgregarAutos(),
@@ -51,7 +48,6 @@ class MyApp extends StatelessWidget {
           'socioscloud': (BuildContext context) => SociosCloud(),
           'addsocioscloud': (BuildContext context) => AddSociosCloud(),
           'portales': (BuildContext context) => Portales(),
-          'home2': (BuildContext context) => Home2(),
         },
         onGenerateRoute: (settings) {
           if (settings.name == 'detalle') {

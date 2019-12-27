@@ -137,7 +137,7 @@ class LoginPage extends StatelessWidget {
     if (info['ok'] && bloc.email == 'martin.berkhoff2@gmail.com') {
       await Navigator.pushReplacementNamed(context, 'admin');
     } else if (info['ok']) {
-      Navigator.pushReplacementNamed(context, 'home2');
+      Navigator.pushReplacementNamed(context, 'home');
       print(info);
     } else {
       mostrarAlerta(context, info['message']);

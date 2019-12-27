@@ -1,6 +1,5 @@
-import 'package:apptagit/src/cloudstore/cobros.dart';
-import 'package:apptagit/src/cloudstore/encargados.dart';
-import 'package:apptagit/src/cloudstore/portales.dart';
+import 'package:apptagit/src/models/cobroModel.dart';
+import 'package:apptagit/src/models/portalesModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreService {
@@ -25,15 +24,11 @@ class FirestoreService {
         );
   }
 
-  Stream<List<Portal>> getPortalesCobro(data) {
-    return _db
-        .collection('portales')
-        .where("longitud", isEqualTo: data)
-        .snapshots()
-        .map(
+  Stream<List<Cobros>> getPortalesCobro() {
+    return _db.collection('Cobros').snapshots().map(
           (snapshot) => snapshot.documents
               .map(
-                (doc) => Portal.fromMap(doc.data, doc.documentID),
+                (doc) => Cobros.fromMap(doc.data, doc.documentID),
               )
               .toList(),
         );
@@ -56,9 +51,5 @@ class FirestoreService {
 
   Future<void> addCobro(Cobros cobro) {
     return _db.collection('Cobros').add(cobro.toMap());
-  }
-
-  Future<void> addEncargado(Encargo cargo) {
-    return _db.collection('encargados').add(cargo.toMap());
   }
 }

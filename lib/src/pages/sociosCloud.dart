@@ -1,8 +1,8 @@
-import 'package:apptagit/src/cloudstore/sociosCloud.dart';
+import 'package:apptagit/src/models/sociosModel.dart';
 import 'package:apptagit/src/pages/addSociosCloud.dart';
 import 'package:flutter/material.dart';
 import 'package:apptagit/src/bloc/provider.dart';
-import 'package:apptagit/src/cloudstore/firestore_service.dart';
+import 'package:apptagit/src/service/sociosService.dart';
 
 class SociosCloud extends StatefulWidget {
   @override

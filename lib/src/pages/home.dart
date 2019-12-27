@@ -1,19 +1,14 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:math';
 
-import 'package:apptagit/src/cloudstore/portales.dart';
-import 'package:apptagit/src/cloudstore/portalesService.dart';
-import 'package:apptagit/src/pages/portales.dart';
-//import 'package:apptagit/src/pages/agregar_coordenada.dart';
+import 'package:apptagit/src/models/portalesModel.dart';
+import 'package:apptagit/src/service/portalesService.dart';
+//import 'package:apptagit/src/cloudstore/cobroService.dart';
+
 import 'package:flutter/material.dart';
 import 'package:apptagit/src/bloc/provider.dart';
-//import 'package:geolocator/geolocator.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 import 'package:location/location.dart';
-//import 'package:apptagit/src/cloudstore/firestore_service.dart'
-import 'package:apptagit/src/cloudstore/cobros.dart';
+import 'package:apptagit/src/models/cobroModel.dart';
 
 class HomePageTagit extends StatefulWidget {
   const HomePageTagit({Key key}) : super(key: key);
@@ -29,151 +24,285 @@ class _HomePageTagitState extends State<HomePageTagit> {
     var data = bloc.email;
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text('No te dejes cobrar de mas'),
-          backgroundColor: Colors.deepPurple,
-        ),
-        drawer: _newMenu(data),
-        body: _body());
+      body: ListPage(),
+    );
+  }
+}
+
+class ListPage extends StatefulWidget {
+  @override
+  _ListPageState createState() => _ListPageState();
+}
+
+class _ListPageState extends State<ListPage> {
+  @override
+  void initState() {
+    super.initState();
   }
 
-  Widget _titulos() {
-    return SafeArea(
-      child: Container(
-        padding: EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Text(
-              'Tarifa actual',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10.0),
-            Text(
-              'Bienvenido, el color te indicara el ',
-              style: TextStyle(color: Colors.black, fontSize: 15.0),
-            ),
-            Text(
-              'horario para el cobro de tu tag ',
-              style: TextStyle(color: Colors.black, fontSize: 15.0),
-            ),
-          ],
-        ),
-      ),
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        _pagina2(),
+        _pagina1(),
+      ],
     );
   }
 
-  _body() {
+  _pagina2() {
     return StreamBuilder(
       stream: FirestoreService().getPortales(),
       builder: (BuildContext context, AsyncSnapshot<List<Portal>> snapshot) {
         //var count = snapshot.data.length;
         //print(count);
-        if (snapshot.hasError || !snapshot.hasData)
+        if (snapshot.hasError || !snapshot.hasData) {
           return CircularProgressIndicator();
+        } else {
+          StreamSubscription<LocationData> locationSubscription;
 
-        return ListView.builder(
-            itemCount: snapshot.data.length - (snapshot.data.length - 1),
-            itemBuilder: (BuildContext context, int index) {
-              // Portal portal = snapshot.data[index];
+          var location = new Location();
 
-              StreamSubscription<LocationData> locationSubscription;
+          locationSubscription = location.onLocationChanged().listen(
+            (LocationData currentLocation) {
+              var locationemit = currentLocation.longitude.toString();
+              var locationemit2 = currentLocation.latitude.toString();
 
-              var location = new Location();
+              var arr = [];
 
-              locationSubscription = location.onLocationChanged().listen(
-                (LocationData currentLocation) {
-                  var locationemit = currentLocation.longitude.toString();
-                  var locationemit2 = currentLocation.latitude.toString();
+              print('longitud ${locationemit} + latitud ${locationemit2}');
 
-                  var arr = [];
+              for (var i = 0; i < snapshot.data.length; i++) {
+                var temp = snapshot.data[i];
 
-                  for (var i = 0; i < snapshot.data.length; i++) {
-                    var temp = snapshot.data[i];
+                var longitud = locationemit.substring(0, 6);
+                var latitud = locationemit2.substring(0, 6);
 
-                    var cuanto = snapshot.data.length;
+                if (longitud == temp.longitud && latitud == temp.latitud) {
+                  arr.add(temp.longitud);
+                  arr.add(temp.latitud);
 
-                    if (locationemit == temp.longitud &&
-                        locationemit2 == temp.latitud) {
-                      //print(temp.nombreP);
-                      //print(temp.costo);
-                      arr.add(temp.longitud);
-                      arr.add(temp.latitud);
+                  int valor = int.parse(temp.costo);
+                  var now = new DateTime.now();
 
-                      int valor = int.parse(temp.costo);
+                  var formatter = new DateFormat('yyyy-MM-dd');
+                  String formatted = formatter.format(now);
 
-                      final muyFuture =
-                          Future.delayed(Duration(seconds: 2), () {
-                        Cobros cobro = Cobros(
-                            categoria: 'tag', dia: 5, mes: 12, valor: valor);
+                  String mesTemp = formatted.substring(5, 7);
+                  String diaTemp = formatted.substring(8, 10);
 
-                        //print('dentro del if ${temp.nombreC}');
+                  var dia = int.parse(diaTemp);
+                  dia = dia - 1;
+                  // print(dia);
 
-                        //FirestoreService().addCobro(cobro);
-                      });
-                      //FirestoreService().addCobro(cobro))
+                  var mes = int.parse(mesTemp);
 
-                      locationSubscription.pause();
+                  var horatemp = new DateFormat('hh:mm a');
+                  String horaformat = horatemp.format(now);
 
-                      var timer = Timer(Duration(seconds: 60),
-                          () => locationSubscription.resume());
-                    }
+                  String horasub = horaformat.substring(0, 2);
+                  var hora = int.parse(horasub);
+                  //print(hora);
+
+                  //arreglo hora
+                  /*var horatemp2 = new DateFormat('hh:mm a');
+                  String horaformat2 = horatemp2.format(now);
+                  String horasub3 = horaformat2.substring(0, 2);
+
+                  String horasub2 = horaformat2.substring(2, 8);
+                  var horasub33 = int.parse(horasub3);
+                  var horasub333 = horasub33 - 3;
+                  //hora corregida para agregar al cobro
+                  */
+                  var horafinal;
+                  String tarifa;
+
+                  if (hora >= 8 && hora <= 10 || hora >= 18 && hora <= 20) {
+                    valor = int.parse(temp.costoAlta);
+                    tarifa = 'Tarifa alta';
+                    horafinal = horaformat;
+                  } else if (hora >= 14 && hora <= 16) {
+                    valor = int.parse(temp.costoMedia);
+                    tarifa = 'Tarifa media';
+                    horafinal = horaformat;
+                  } else {
+                    valor = int.parse(temp.costo);
+                    horafinal = horaformat;
+                    tarifa = 'Tarifa baja';
                   }
 
-                  //if (locationemit == temp.longitud) {}
-                },
-              );
+                  //print(horaformat);
+                  //horario tarifa alta
+                  /*
+                  if (hora >= 11 && hora <= 13 || hora >= 21 && hora <= 23) {
+                    valor = int.parse(temp.costoAlta);
+                    tarifa = 'Tarifa alta';
+                    horafinal = horasub333.toString() + horasub2;
+                  } else if (hora >= 17 && hora <= 19) {
+                    valor = int.parse(temp.costoMedia);
+                    tarifa = 'Tarifa media';
+                    horafinal = horasub333.toString() + horasub2;
+                  } else {
+                    valor = int.parse(temp.costo);
+                    horafinal = horaformat2;
+                    tarifa = 'Tarifa baja';
+                  } */
+                  String categoria;
 
-              // return ListTile();
-              return ListTile();
-            });
+                  if (temp.categoria == 'Tag') {
+                    categoria = temp.categoria;
+                  } else if (temp.categoria == 'Peaje') {
+                    categoria = temp.categoria;
+                  } else {
+                    categoria = temp.categoria;
+                  }
+
+                  if (categoria != null &&
+                      categoria != '' &&
+                      dia != null &&
+                      dia != 0 &&
+                      mes != null &&
+                      mes != 0 &&
+                      valor != null &&
+                      valor != 0 &&
+                      temp.nombreP != null &&
+                      temp.nombreP != '' &&
+                      temp.nombreC != null &&
+                      temp.nombreC != '' &&
+                      horafinal != null &&
+                      horafinal != '') {
+                    Future.delayed(Duration(seconds: 1), () {
+                      Cobros cobro = Cobros(
+                          categoria: categoria,
+                          dia: dia,
+                          mes: mes,
+                          valor: valor,
+                          nombrePortal: temp.nombreP,
+                          nombreCon: temp.nombreC,
+                          hora: horafinal,
+                          tarifa: tarifa);
+                      FirestoreService().addCobro(cobro);
+                      locationSubscription.cancel();
+
+                      print('se cobro');
+                    });
+
+                    Timer(Duration(seconds: 1),
+                        () => locationSubscription.resume());
+                  } else {
+                    print('no entro');
+                  }
+                  /*
+                      categoria = '';
+                      dia = 0;
+                      mes = 0;
+                      valor = 0;
+                      temp.nombreP = '';
+                      temp.nombreC = '';
+                      horafinal = '';
+                      */
+
+                  //FirestoreService().addCobro(cobro))
+
+                }
+              }
+              // Timer(Duration(seconds: 15), () => locationSubscription.resume());
+
+              //if (locationemit == temp.longitud) {}
+            },
+          );
+
+          // return ListTile();
+          return ListTile();
+        }
+
+        // Portal portal = snapshot.data[index];
       },
     );
   }
 
-  Drawer _newMenu(data) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: Container(),
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('asset/fondo2.jpg'), fit: BoxFit.cover)),
-          ),
-          ListTile(
-            leading: Icon(Icons.pages, color: Colors.deepPurple),
-            title: Text('Home'),
-            onTap: () {
-              Navigator.pushNamed(context, 'home');
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.pages, color: Colors.deepPurple),
-            title: Text('Mis Autos'),
-            onTap: () {
-              Navigator.pushNamed(context, 'autos');
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.pages, color: Colors.deepPurple),
-            title: Text('Mis socios'),
-            onTap: () {
-              Navigator.pushNamed(context, 'socioscloud');
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.pages, color: Colors.deepPurple),
-            title: Text('Mis estadisticas'),
-            onTap: () {
-              Navigator.pushNamed(context, 'estadisticas');
-            },
-          ),
-        ],
+  _pagina1() {
+    return Stack(
+      children: <Widget>[
+        _imagenFondo(),
+        _colorFondo(),
+        _textosInicio(),
+      ],
+    );
+  }
+
+  _colorFondo() {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      //color: Color.fromRGBO(8, 192, 218, 0.0),
+    );
+  }
+
+  _imagenFondo() {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      child: Image(
+        image: AssetImage('asset/fondo3.jpg'),
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  _textosInicio() {
+    final estiloTextos = TextStyle(color: Colors.white, fontSize: 25.0);
+
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 70.0, top: 50.0),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            //crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(height: 20.0),
+              Text(
+                'bienvenido',
+                style: estiloTextos,
+              ),
+              SizedBox(height: 200.0),
+              RaisedButton(
+                shape: StadiumBorder(),
+                color: Colors.purple,
+                textColor: Colors.white,
+                child: Text(
+                  'Revisa tus estadisticas',
+                  style: TextStyle(fontSize: 20.0),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, 'estadisticas');
+                },
+              ),
+              RaisedButton(
+                shape: StadiumBorder(),
+                color: Colors.deepPurple,
+                textColor: Colors.white,
+                child: Text(
+                  '      Agrega un Socio     ',
+                  style: TextStyle(fontSize: 20.0),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, 'socioscloud');
+                },
+              ),
+              RaisedButton(
+                shape: StadiumBorder(),
+                color: Colors.deepPurpleAccent,
+                textColor: Colors.white,
+                child: Text(
+                  '  Agrega un vechiculo  ',
+                  style: TextStyle(fontSize: 20.0),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, 'autos');
+                },
+              ),
+            ]),
       ),
     );
   }

@@ -1,15 +1,12 @@
-import 'package:apptagit/src/cloudstore/encargados.dart';
-import 'package:apptagit/src/cloudstore/portalesService.dart';
+import 'package:apptagit/src/models/clienteModel.dart';
 import 'package:apptagit/src/providers/car_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-//import 'package:apptagit/src/utils/utils.dart' as utils;
 import 'package:apptagit/src/models/carModel.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 
 class AgregarAutos extends StatefulWidget {
-  final Encargo encargado;
+  final Cliente encargado;
 
   const AgregarAutos({Key key, this.encargado}) : super(key: key);
 

@@ -1,10 +1,8 @@
-import 'package:apptagit/src/cloudstore/firestore_service.dart';
-import 'package:apptagit/src/cloudstore/sociosCloud.dart';
+import 'package:apptagit/src/service/sociosService.dart';
+import 'package:apptagit/src/models/sociosModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:apptagit/src/bloc/provider.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AddSociosCloud extends StatefulWidget {
   // AddSociosCloud({Key key}) : super(key: key);
@@ -28,7 +26,6 @@ class _AddSociosCloudState extends State<AddSociosCloud> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _nombreControler =
         TextEditingController(text: isEditMode ? widget.socio.nombre : '');
@@ -47,7 +44,6 @@ class _AddSociosCloudState extends State<AddSociosCloud> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> _accounttype = <String>['hola', 'chao', 'algo'];
     return Scaffold(
       // key: scaffolkey,
       appBar: AppBar(

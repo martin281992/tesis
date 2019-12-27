@@ -1,8 +1,8 @@
-import 'package:apptagit/src/cloudstore/portales.dart';
+import 'package:apptagit/src/models/portalesModel.dart';
 
 import 'package:apptagit/src/pages/agregar_coordenada.dart';
 import 'package:flutter/material.dart';
-import 'package:apptagit/src/cloudstore/portalesService.dart';
+import 'package:apptagit/src/service/portalesService.dart';
 
 class Portales extends StatefulWidget {
   @override

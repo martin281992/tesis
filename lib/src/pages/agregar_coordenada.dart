@@ -1,7 +1,5 @@
-import 'dart:async';
-
-import 'package:apptagit/src/cloudstore/portalesService.dart';
-import 'package:apptagit/src/cloudstore/portales.dart';
+import 'package:apptagit/src/service/portalesService.dart';
+import 'package:apptagit/src/models/portalesModel.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/services.dart';
@@ -30,11 +28,9 @@ class _AgregarCoordenadaState extends State<AgregarCoordenada> {
   TextEditingController _coordenadaLatControler;
 
   FocusNode _focusFiel;
-  FocusNode _focusFiel2;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _nombrePortalControler =
         TextEditingController(text: isEditMode ? widget.portal.nombreP : '');
@@ -55,7 +51,6 @@ class _AgregarCoordenadaState extends State<AgregarCoordenada> {
     _coordenadaLatControler =
         TextEditingController(text: isEditMode ? widget.portal.latitud : '');
     _focusFiel = FocusNode();
-    _focusFiel2 = FocusNode();
   }
 
   get isEditMode => widget.portal != null;

@@ -1,5 +1,4 @@
-import 'package:apptagit/src/cloudstore/cobros.dart';
-import 'package:apptagit/src/cloudstore/sociosCloud.dart';
+import 'package:apptagit/src/models/sociosModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreService {
