@@ -65,131 +65,142 @@ class _ListPageState extends State<ListPage> {
       builder: (BuildContext context, AsyncSnapshot<List<Portal>> snapshot) {
         //var count = snapshot.data.length;
         //print(count);
-        if (snapshot.hasError || !snapshot.hasData)
+        if (snapshot.hasError || !snapshot.hasData) {
           return CircularProgressIndicator();
+        } else {
+          StreamSubscription<LocationData> locationSubscription;
 
-        return ListView.builder(
-            itemCount: snapshot.data.length - (snapshot.data.length - 1),
-            itemBuilder: (BuildContext context, int index) {
-              print('se llamo');
-              // Portal portal = snapshot.data[index];
+          var location = new Location();
 
-              StreamSubscription<LocationData> locationSubscription;
+          locationSubscription = location.onLocationChanged().listen(
+            (LocationData currentLocation) {
+              var locationemit = currentLocation.longitude.toString();
+              var locationemit2 = currentLocation.latitude.toString();
 
-              var location = new Location();
+              var arr = [];
 
-              locationSubscription = location.onLocationChanged().listen(
-                (LocationData currentLocation) {
-                  var locationemit = currentLocation.longitude.toString();
-                  var locationemit2 = currentLocation.latitude.toString();
+              for (var i = 0; i < snapshot.data.length; i++) {
+                var temp = snapshot.data[i];
 
-                  var arr = [];
+                var longitud = locationemit.substring(0, 6);
+                var latitud = locationemit2.substring(0, 6);
 
-                  for (var i = 0; i < snapshot.data.length; i++) {
-                    var temp = snapshot.data[i];
+                if (longitud == temp.longitud && latitud == temp.latitud) {
+                  locationSubscription.pause();
 
-                    if (locationemit == temp.longitud &&
-                        locationemit2 == temp.latitud) {
-                      //print(temp.nombreP);
-                      //print(temp.costo);
-                      arr.add(temp.longitud);
-                      arr.add(temp.latitud);
+                  arr.add(temp.longitud);
+                  arr.add(temp.latitud);
 
-                      int valor = int.parse(temp.costo);
-                      var now = new DateTime.now();
+                  int valor = int.parse(temp.costo);
+                  var now = new DateTime.now();
 
-                      var formatter = new DateFormat('yyyy-MM-dd');
-                      String formatted = formatter.format(now);
+                  var formatter = new DateFormat('yyyy-MM-dd');
+                  String formatted = formatter.format(now);
 
-                      String mesTemp = formatted.substring(5, 7);
-                      String diaTemp = formatted.substring(8, 10);
+                  String mesTemp = formatted.substring(5, 7);
+                  String diaTemp = formatted.substring(8, 10);
 
-                      var dia = int.parse(diaTemp);
-                      dia = dia - 1;
-                      // print(dia);
+                  var dia = int.parse(diaTemp);
+                  dia = dia - 1;
+                  // print(dia);
 
-                      var mes = int.parse(mesTemp);
+                  var mes = int.parse(mesTemp);
 
-                      var horatemp = new DateFormat('hh');
-                      String horaformat = horatemp.format(now);
+                  var horatemp = new DateFormat('hh:mm a');
+                  String horaformat = horatemp.format(now);
 
-                      String horasub = horaformat.substring(0, 2);
-                      var hora = int.parse(horasub);
-                      //print(hora);
+                  String horasub = horaformat.substring(0, 2);
+                  var hora = int.parse(horasub);
+                  //print(hora);
 
-                      //arreglo hora
-                      var horatemp2 = new DateFormat('hh:mm a');
-                      String horaformat2 = horatemp2.format(now);
-                      String horasub3 = horaformat2.substring(0, 2);
+                  //arreglo hora
+                  /*var horatemp2 = new DateFormat('hh:mm a');
+                  String horaformat2 = horatemp2.format(now);
+                  String horasub3 = horaformat2.substring(0, 2);
 
-                      String horasub2 = horaformat2.substring(2, 8);
-                      var horasub33 = int.parse(horasub3);
-                      var horasub333 = horasub33 - 3;
-                      //hora corregida para agregar al cobro
-                      var horafinal;
-                      String tarifa;
+                  String horasub2 = horaformat2.substring(2, 8);
+                  var horasub33 = int.parse(horasub3);
+                  var horasub333 = horasub33 - 3;
+                  //hora corregida para agregar al cobro
+                  */
+                  var horafinal;
+                  String tarifa;
 
-                      print(horaformat2);
-                      //horario tarifa alta
-                      if (hora >= 11 && hora <= 13 ||
-                          hora >= 21 && hora <= 23) {
-                        valor = int.parse(temp.costoAlta);
-                        tarifa = 'Tarifa alta';
-                        horafinal = horasub333.toString() + horasub2;
-                      } else if (hora >= 17 && hora <= 19) {
-                        valor = int.parse(temp.costoMedia);
-                        tarifa = 'Tarifa media';
-                        horafinal = horasub333.toString() + horasub2;
-                      } else {
-                        valor = int.parse(temp.costo);
-                        horafinal = horaformat2;
-                        tarifa = 'Tarifa baja';
-                      }
-                      String categoria;
+                  if (hora >= 8 && hora <= 10 || hora >= 18 && hora <= 20) {
+                    valor = int.parse(temp.costoAlta);
+                    tarifa = 'Tarifa alta';
+                    horafinal = horaformat;
+                  } else if (hora >= 14 && hora <= 16) {
+                    valor = int.parse(temp.costoMedia);
+                    tarifa = 'Tarifa media';
+                    horafinal = horaformat;
+                  } else {
+                    valor = int.parse(temp.costo);
+                    horafinal = horaformat;
+                    tarifa = 'Tarifa baja';
+                  }
 
-                      if (temp.categoria == 'Tag') {
-                        categoria = temp.categoria;
-                      } else if (temp.categoria == 'Peaje') {
-                        categoria = temp.categoria;
-                      } else {
-                        categoria = temp.categoria;
-                      }
+                  print(horaformat);
+                  //horario tarifa alta
+                  /*
+                  if (hora >= 11 && hora <= 13 || hora >= 21 && hora <= 23) {
+                    valor = int.parse(temp.costoAlta);
+                    tarifa = 'Tarifa alta';
+                    horafinal = horasub333.toString() + horasub2;
+                  } else if (hora >= 17 && hora <= 19) {
+                    valor = int.parse(temp.costoMedia);
+                    tarifa = 'Tarifa media';
+                    horafinal = horasub333.toString() + horasub2;
+                  } else {
+                    valor = int.parse(temp.costo);
+                    horafinal = horaformat2;
+                    tarifa = 'Tarifa baja';
+                  } */
+                  String categoria;
 
-                      if (categoria != null &&
-                          categoria != '' &&
-                          dia != null &&
-                          dia != 0 &&
-                          mes != null &&
-                          mes != 0 &&
-                          valor != null &&
-                          valor != 0 &&
-                          temp.nombreP != null &&
-                          temp.nombreP != '' &&
-                          temp.nombreC != null &&
-                          temp.nombreC != '' &&
-                          horafinal != null &&
-                          horafinal != '') {
-                        Future.delayed(Duration(seconds: 10), () {
-                          Cobros cobro = Cobros(
-                              categoria: categoria,
-                              dia: dia,
-                              mes: mes,
-                              valor: valor,
-                              nombrePortal: temp.nombreP,
-                              nombreCon: temp.nombreC,
-                              hora: horafinal,
-                              tarifa: tarifa);
+                  if (temp.categoria == 'Tag') {
+                    categoria = temp.categoria;
+                  } else if (temp.categoria == 'Peaje') {
+                    categoria = temp.categoria;
+                  } else {
+                    categoria = temp.categoria;
+                  }
 
-                          // FirestoreService().addCobro(cobro);
-                        });
-                        locationSubscription.pause();
+                  if (categoria != null &&
+                      categoria != '' &&
+                      dia != null &&
+                      dia != 0 &&
+                      mes != null &&
+                      mes != 0 &&
+                      valor != null &&
+                      valor != 0 &&
+                      temp.nombreP != null &&
+                      temp.nombreP != '' &&
+                      temp.nombreC != null &&
+                      temp.nombreC != '' &&
+                      horafinal != null &&
+                      horafinal != '') {
+                    Future.delayed(Duration(seconds: 10), () {
+                      Cobros cobro = Cobros(
+                          categoria: categoria,
+                          dia: dia,
+                          mes: mes,
+                          valor: valor,
+                          nombrePortal: temp.nombreP,
+                          nombreCon: temp.nombreC,
+                          hora: horafinal,
+                          tarifa: tarifa);
 
-                        Timer(Duration(seconds: 60),
-                            () => locationSubscription.resume());
-                      } else {
-                        print('no entro');
-                      }
-                      /*
+                      FirestoreService().addCobro(cobro);
+                      locationSubscription.pause();
+                    });
+
+                    Timer(Duration(seconds: 15),
+                        () => locationSubscription.resume());
+                  } else {
+                    print('no entro');
+                  }
+                  /*
                       categoria = '';
                       dia = 0;
                       mes = 0;
@@ -199,18 +210,21 @@ class _ListPageState extends State<ListPage> {
                       horafinal = '';
                       */
 
-                      //FirestoreService().addCobro(cobro))
+                  //FirestoreService().addCobro(cobro))
 
-                    }
-                  }
+                }
+              }
+              // Timer(Duration(seconds: 15), () => locationSubscription.resume());
 
-                  //if (locationemit == temp.longitud) {}
-                },
-              );
+              //if (locationemit == temp.longitud) {}
+            },
+          );
 
-              // return ListTile();
-              return ListTile();
-            });
+          // return ListTile();
+          return ListTile();
+        }
+
+        // Portal portal = snapshot.data[index];
       },
     );
   }

@@ -23,7 +23,7 @@ class _AgregarCoordenadaState extends State<AgregarCoordenada> {
   TextEditingController _consecionariaControler;
   TextEditingController _costoControler;
   TextEditingController _costoMediaControler;
-
+  TextEditingController _categoriaControler;
   TextEditingController _costoAltaControler;
 
   TextEditingController _coordenadaLonControler;
@@ -44,11 +44,14 @@ class _AgregarCoordenadaState extends State<AgregarCoordenada> {
         TextEditingController(text: isEditMode ? widget.portal.costoMedia : '');
     _costoAltaControler =
         TextEditingController(text: isEditMode ? widget.portal.costoAlta : '');
+    _categoriaControler =
+        TextEditingController(text: isEditMode ? widget.portal.categoria : '');
     _consecionariaControler =
         TextEditingController(text: isEditMode ? widget.portal.nombreC : '');
 
     _coordenadaLonControler =
         TextEditingController(text: isEditMode ? widget.portal.longitud : '');
+
     _coordenadaLatControler =
         TextEditingController(text: isEditMode ? widget.portal.latitud : '');
     _focusFiel = FocusNode();
@@ -72,9 +75,11 @@ class _AgregarCoordenadaState extends State<AgregarCoordenada> {
           child: Column(
             children: <Widget>[
               _nombreConsecionaria(context),
-              SizedBox(height: 20.0),
+              SizedBox(height: 10.0),
               _nombrePortal(context),
-              SizedBox(height: 20.0),
+              SizedBox(height: 10.0),
+              _categoria(context),
+              SizedBox(height: 10.0),
               _costoPortal(context),
               SizedBox(height: 10.0),
               _costoMediaPortal(context),
@@ -135,6 +140,28 @@ class _AgregarCoordenadaState extends State<AgregarCoordenada> {
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
         labelText: 'Nombre Portal',
+      ),
+      //onSaved: (value) => socio.nombre = value,
+    );
+  }
+
+  Widget _categoria(context) {
+    return TextFormField(
+      textInputAction: TextInputAction.next,
+      onEditingComplete: () {
+        FocusScope.of(context).requestFocus(_focusFiel);
+      },
+      controller: _categoriaControler,
+      validator: (value) {
+        if (value.length < 3 || value == null || value.isEmpty) {
+          return 'ingrese el nombre correctamente';
+        } else {
+          return null;
+        }
+      },
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(
+        labelText: 'Categoria: Peaje o Tag',
       ),
       //onSaved: (value) => socio.nombre = value,
     );
@@ -270,17 +297,29 @@ class _AgregarCoordenadaState extends State<AgregarCoordenada> {
                   nombreC: _consecionariaControler.text,
                   nombreP: _nombrePortalControler.text,
                   costo: _costoControler.text,
+                  costoMedia: _costoMediaControler.text,
+                  costoAlta: _costoAltaControler.text,
+                  categoria: _categoriaControler.text,
                   latitud: _currentLat.toString(),
                   longitud: _currentLon.toString(),
                   id: widget.portal.id);
               FirestoreService().updatePortal(portal);
             } else {
+              var templatitud = _currentLat.toString();
+              var latitud = templatitud.substring(0, 6);
+
+              var templongitud = _currentLon.toString();
+              var longitud = templongitud.substring(0, 6);
+
               Portal portal = Portal(
                   nombreC: _consecionariaControler.text,
                   nombreP: _nombrePortalControler.text,
+                  costoMedia: _costoMediaControler.text,
+                  costoAlta: _costoAltaControler.text,
+                  categoria: _categoriaControler.text,
                   costo: _costoControler.text,
-                  latitud: _currentLat.toString(),
-                  longitud: _currentLon.toString());
+                  latitud: latitud,
+                  longitud: longitud);
 
               await FirestoreService().addPortal(portal);
             }
